@@ -1,65 +1,56 @@
-import Image from "next/image";
+/**
+ * NEXT.JS CONCEPT: page.jsx
+ *
+ * Any file named `page.jsx` inside `app/` becomes a ROUTE automatically.
+ * app/page.jsx          →  localhost:3000/
+ * app/about/page.jsx    →  localhost:3000/about
+ * app/blog/[id]/page.jsx →  localhost:3000/blog/123   (dynamic route)
+ *
+ * NO <BrowserRouter>, NO react-router-dom. The folder IS the route.
+ *
+ * This is a SERVER COMPONENT. That means we can fetch data directly
+ * inside the component using async/await — no useEffect, no useState.
+ * Next.js runs this on the server and sends the ready HTML to the browser.
+ *
+ * The interactive parts (ShortenBox, LinksList) are Client Components
+ * imported below. Server components CAN render client components inside them.
+ */
 
-export default function Home() {
+import { getStats, getLinks } from "@/lib/api";
+// @/ is a Next.js path alias for the project root — set in jsconfig.json
+// Much cleaner than ../../lib/api
+
+import StatsRow from "../components/StatsRow";
+import ShortenBox from "../components/ShortenBox";
+import LinksList from "../components/LinksList";
+import styles from "./page.module.css";
+
+// ✅ async function — only works in Server Components
+// Next.js will call this on every request (or cache it, see below)
+export default async function HomePage() {
+  // Fetching data directly in the component — no useEffect needed!
+  // Next.js runs this on the server before sending HTML to the browser.
+  const [stats, links] = await Promise.all([
+    getStats(),
+    getLinks(),
+  ]);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <main className={styles.main}>
+      <div className={styles.header}>
+        <div className={styles.dot} />
+        <h1 className={styles.title}>Snip</h1>
+        <span className={styles.subtitle}>url shortener</span>
+      </div>
+
+      {/* Server component — receives data as props, no fetching inside */}
+      <StatsRow initialStats={stats} />
+
+      {/* Client component — handles the input, POST request, clipboard */}
+      <ShortenBox />
+
+      {/* Client component — handles the list, delete, refresh */}
+      <LinksList initialLinks={links} />
+    </main>
   );
 }

@@ -1,0 +1,33 @@
+.row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 1.5rem;
+}
+
+.stat {
+  background: #111;
+  border: 0.5px solid #222;
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+}
+
+.label {
+  font-size: 0.65rem;
+  color: #555;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+  font-family: var(--font-mono, monospace);
+}
+
+.value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: #f0ede8;
+}
+
+.accent {
+  color: #c8f04a;
+}

@@ -1,0 +1,50 @@
+/*
+ * NEXT.JS CONCEPT: CSS Modules  (filename ends in .module.css)
+ *
+ * CSS Modules are scoped to the component that imports them.
+ * The class names are auto-hashed at build time, so .main here
+ * won't clash with a .main class in any other file.
+ *
+ * Usage in JSX:  import styles from './page.module.css'
+ *                <div className={styles.main}>
+ *
+ * In React/Vite you might use plain CSS or styled-components.
+ * CSS Modules are Next.js's built-in solution — zero config needed.
+ */
+
+.main {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 4rem;
+}
+
+.header {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 2rem;
+}
+
+.dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #c8f04a;
+  margin-bottom: 2px;
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: #f0ede8;
+}
+
+.subtitle {
+  font-size: 0.75rem;
+  color: #555;
+  font-family: var(--font-mono, monospace);
+  letter-spacing: 0.04em;
+}

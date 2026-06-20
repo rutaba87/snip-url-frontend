@@ -1,21 +1,3 @@
-/**
- * NEXT.JS CONCEPT: page.jsx
- *
- * Any file named `page.jsx` inside `app/` becomes a ROUTE automatically.
- * app/page.jsx          →  localhost:3000/
- * app/about/page.jsx    →  localhost:3000/about
- * app/blog/[id]/page.jsx →  localhost:3000/blog/123   (dynamic route)
- *
- * NO <BrowserRouter>, NO react-router-dom. The folder IS the route.
- *
- * This is a SERVER COMPONENT. That means we can fetch data directly
- * inside the component using async/await — no useEffect, no useState.
- * Next.js runs this on the server and sends the ready HTML to the browser.
- *
- * The interactive parts (ShortenBox, LinksList) are Client Components
- * imported below. Server components CAN render client components inside them.
- */
-
 import { getStats, getLinks } from "@/lib/api";
 // @/ is a Next.js path alias for the project root — set in jsconfig.json
 // Much cleaner than ../../lib/api

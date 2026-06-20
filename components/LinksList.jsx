@@ -1,20 +1,4 @@
 "use client";
-/**
- * NEXT.JS CONCEPT: Optimistic UI + router.refresh()
- *
- * Pattern used here:
- * 1. User clicks delete
- * 2. We immediately remove it from local state (optimistic update — feels instant)
- * 3. We call the DELETE API in the background
- * 4. We call router.refresh() to sync the server component with fresh DB data
- *
- * This is the recommended Next.js pattern instead of:
- *   - Manually re-fetching with useEffect
- *   - Using a global state manager like Redux
- *
- * `initialLinks` is passed from the server (page.jsx fetched it).
- * We put it in local state so we can mutate it immediately on delete.
- */
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -66,6 +50,8 @@ export default function LinksList({ initialLinks = [] }) {
     );
   }
 
+  const BACKEND_URL = "https://snip-url-backend.vercel.app/api";
+
   return (
     <div>
       <div className={styles.sectionHeader}>
@@ -81,7 +67,7 @@ export default function LinksList({ initialLinks = [] }) {
             <div className={styles.info}>
               <div className={styles.original}>{link.originalUrl}</div>
               <div className={styles.short}>
-                {process.env.NEXT_PUBLIC_API_URL || "localhost:5000/api"}/{link.shortCode}
+                {BACKEND_URL}/{link.shortCode}
               </div>
             </div>
 
